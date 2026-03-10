@@ -9,7 +9,7 @@ Prototipo mínimo de un servidor web en Java que usa reflexión para descubrir c
 - Descubrimiento automático de controladores dentro del paquete base.
 - Soporte para respuestas dinámicas `String`.
 - Soporte para páginas HTML y recursos estáticos `.png` desde `src/main/resources/static`.
-- Aplicación de ejemplo con `/hello`, `/pi`, `/greeting` e `index.html`.
+- Aplicación de ejemplo con `/hello`, `/pi`, `/greeting`, `/images/pixel.png` e `index.html`.
 
 ## Ejecutar
 
@@ -26,18 +26,6 @@ mvn compile
 java -cp target/classes com.arep.microspringboot.MicroSpringBoot
 ```
 
-Levantar el servidor indicando paquete base y puerto:
-
-```bash
-java -cp target/classes com.arep.microspringboot.MicroSpringBoot com.arep.microspringboot 8080
-```
-
-También es posible cargar un único controlador por nombre completo:
-
-```bash
-java -cp target/classes com.arep.microspringboot.MicroSpringBoot com.arep.microspringboot.HelloController 8080
-```
-
 ## Endpoints de ejemplo
 
 - `/`
@@ -49,4 +37,26 @@ java -cp target/classes com.arep.microspringboot.MicroSpringBoot com.arep.micros
 
 ## Evidencia AWS
 
-La evidencia de despliegue en AWS no puede generarse automáticamente desde este entorno. Para completar el entregable final, despliegue el `jar` en una instancia EC2 o una VM equivalente, ejecute el servidor y adjunte captura de pantalla o logs con una petición exitosa al puerto publicado.
+- `mvn package`
+
+![](/src/main/resources/static/evidences/1.png)
+
+- `java -cp target/classes com.arep.microspringboot.MicroSpringBoot`
+
+![](/src/main/resources/static/evidences/2.png)
+
+### Test endpoints
+
+![](/src/main/resources/static/evidences/2.png)
+
+![](/src/main/resources/static/evidences/3.png)
+
+![](/src/main/resources/static/evidences/4.png)
+
+![](/src/main/resources/static/evidences/5.png)
+
+![](/src/main/resources/static/evidences/6.png)
+
+![](/src/main/resources/static/evidences/7.png)
+
+![](/src/main/resources/static/evidences/8.png)
