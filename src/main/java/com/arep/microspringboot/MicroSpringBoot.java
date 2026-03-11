@@ -26,10 +26,14 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class MicroSpringBoot {
 
     static final int DEFAULT_PORT = 8080;
+    private static final int THREAD_POOL_SIZE = 10;
     private static final String STATIC_ROOT = "static";
     static final Map<String, RouteDefinition> controllerMethods = new LinkedHashMap<>();
 
@@ -151,11 +155,42 @@ public class MicroSpringBoot {
     }
 
     private static void startServer(int port) throws IOException {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("MicroSpringBoot listening on http://localhost:" + port);
-            while (true) {
-                try (Socket clientSocket = serverSocket.accept()) {
-                    handleClient(clientSocket);
+        ServerSocket serverSocket = new ServerSocket(port);
+        ExecutorService executor = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("MicroSpringBoot shutting down...");
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                // ignore - we are already shutting down
+            }
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(30, TimeUnit.SECONDS)) {
+                    executor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                executor.shutdownNow();
+                Thread.currentThread().interrupt();
+            }
+            System.out.println("MicroSpringBoot stopped.");
+        }));
+
+        System.out.println("MicroSpringBoot listening on http://localhost:" + port);
+        while (!serverSocket.isClosed()) {
+            try {
+                Socket clientSocket = serverSocket.accept();
+                executor.submit(() -> {
+                    try {
+                        handleClient(clientSocket);
+                    } catch (IOException e) {
+                        System.err.println("Error handling client: " + e.getMessage());
+                    }
+                });
+            } catch (IOException e) {
+                if (!serverSocket.isClosed()) {
+                    System.err.println("Error accepting connection: " + e.getMessage());
                 }
             }
         }
