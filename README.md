@@ -171,26 +171,4 @@ docker run -d -p 8080:8080 --restart unless-stopped \
 
 ## Evidencia AWS
 
-- `mvn package`
-
-![](/src/main/resources/static/evidences/1.png)
-
-- `java -cp target/classes com.arep.microspringboot.MicroSpringBoot`
-
-![](/src/main/resources/static/evidences/2.png)
-
-### Test endpoints
-
-![](/src/main/resources/static/evidences/2.png)
-
-![](/src/main/resources/static/evidences/3.png)
-
-![](/src/main/resources/static/evidences/4.png)
-
-![](/src/main/resources/static/evidences/5.png)
-
-![](/src/main/resources/static/evidences/6.png)
-
-![](/src/main/resources/static/evidences/7.png)
-
-![](/src/main/resources/static/evidences/8.png)
+![Video Evidencias AWS](src/main/resources/static/evidences/evidencias_aXB33r8d.mp4)
